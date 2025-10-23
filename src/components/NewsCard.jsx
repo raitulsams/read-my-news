@@ -5,6 +5,7 @@ import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { GoShareAndroid } from "react-icons/go";
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
+import ShareOnSocial from 'react-share-on-social';
 const NewsCard = ({ news }) => {
     const [expanded, setExpanded] = useState(false);
     // Calculate stars
@@ -12,6 +13,9 @@ const NewsCard = ({ news }) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating - fullStars >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+    // Bookmarks
+    const [bookmarked, setBookmarked] = useState(false);
     return (
         <div>
             <div className='grid grid-cols-1 mx-2  rounded-sm shadow-md'>
@@ -22,9 +26,32 @@ const NewsCard = ({ news }) => {
                         <p className='text-xs text-accent'>{format(news?.author?.published_date, "yyyy-MM-dd")}</p>
                     </div>
                     <div className='flex gap-2 justify-end flex-1 items-center pr-3'>
-                        <BsJournalBookmark size={18}></BsJournalBookmark>
-                        <BsFillJournalBookmarkFill size={18}></BsFillJournalBookmarkFill>
-                        <GoShareAndroid size={18}></GoShareAndroid>
+                        <button className='btn btn-square' onClick={() => { setBookmarked(!bookmarked) }}>
+                            {
+                                bookmarked ?
+                                    <BsFillJournalBookmarkFill size={18}></BsFillJournalBookmarkFill>
+                                    :
+                                    <BsJournalBookmark size={18}></BsJournalBookmark>
+
+                            }
+                        </button>
+                        {/* <button className='btn btn-square' onClick={() => { setBookmarked(!bookmarked) }}>
+                            <BsFillJournalBookmarkFill size={18}></BsFillJournalBookmarkFill>
+                        </button> */}
+                        <ShareOnSocial
+                            textToShare="Check out this new wardrobe I just found from IKEA!"
+                            link="https://ikea.com/wardrobes/kalle"
+                            linkTitle="KALLE Wardorbe which chooses your clothes for you using AI - IKEA"
+                            linkMetaDesc="Stop going through the agony of choosing clothes that fit the weather and your mood."
+                            // linkFavicon={favicon}
+                            // noReferer
+                            shareTo={['Facebook', 'Linkedin', 'Reddit', 'Pocket', 'Tumblr', 'Whatsapp', 'Telegram', 'Email']}
+                            showIcons={true}
+                        >
+                            <button className='btn btn-circle'>
+                                <GoShareAndroid size={18} > </GoShareAndroid>
+                            </button>
+                        </ShareOnSocial>
                     </div>
                 </div>
                 <div className='flex flex-col gap-4 p-4'>
@@ -32,7 +59,6 @@ const NewsCard = ({ news }) => {
                     <img className='w-full mx-auto' src={news?.thumbnail_url} alt="" />
                     <span className={`${expanded ? '' : 'line-clamp-3'} transition-all text-sm/[26px] text-accent`}>
                         {news?.details}
-
                     </span>
                     <span>
                         {news?.details && (
