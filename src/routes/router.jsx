@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import HomeLayout from '../layouts/HomeLayout';
 import Home from '../pages/Home';
 import CategoryNews from '../pages/CategoryNews';
+import BookMarkedNewsList from '../components/BookMarkedNewsList';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
                 path: "/category/:id",
                 element: <CategoryNews></CategoryNews>,
                 loader: () => fetch("/news.json").then(res => res.json())
+            },
+            {
+                path: "/bookmarkednews",
+                element: <BookMarkedNewsList></BookMarkedNewsList>
             }
         ]
     },

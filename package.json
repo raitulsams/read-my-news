@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "date-fns": "^4.1.0",
+    "notifyjs": "^3.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-fast-marquee": "^1.6.5",
@@ -19,6 +20,7 @@
     "react-popupify": "^1.0.4",
     "react-router": "^7.9.4",
     "react-share-on-social": "^1.0.12",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
