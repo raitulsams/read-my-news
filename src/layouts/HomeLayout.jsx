@@ -11,16 +11,16 @@ const HomeLayout = () => {
         <div>
             <header>
                 <Header></Header>
-                <section className='w-11/12 mx-auto my-3'>
+                <section className='w-10/12 mx-auto my-3'>
                     <LatestNews></LatestNews>
                 </section>
-                <nav className='w-11/12 mx-auto'>
+                <nav className='w-10/12 mx-auto'>
                     <NavBar></NavBar>
                 </nav>
 
             </header>
 
-            <main className='w-11/12 mx-auto grid grid-cols-12'>
+            <main className='w-10/12 mx-auto grid grid-cols-12'>
                 <aside className='col-span-3'>
                     <LeftAside></LeftAside>
                 </aside>
