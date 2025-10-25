@@ -4,6 +4,9 @@ import HomeLayout from '../layouts/HomeLayout';
 import Home from '../pages/Home';
 import CategoryNews from '../pages/CategoryNews';
 import BookMarkedNewsList from '../components/BookMarkedNewsList';
+import Login from '../components/loginLayout/Login';
+import LoginLayout from '../components/loginLayout/LoginLayout';
+import Register from '../components/loginLayout/Register';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -21,6 +24,20 @@ const router = createBrowserRouter([
             {
                 path: "/bookmarkednews",
                 element: <BookMarkedNewsList></BookMarkedNewsList>
+            }
+        ]
+    },
+    {
+        path: "/login",
+        element: <LoginLayout></LoginLayout>,
+        children: [
+            {
+                path: "",
+                element: <Login></Login>
+            },
+            {
+                path: "register",
+                element: <Register></Register>
             }
         ]
     },
