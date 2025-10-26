@@ -1,12 +1,13 @@
-import { Outlet } from "react-router";
-import Header from "../Header";
 
+import Header from "../Header";
+import { Outlet } from "react-router";
+import { AnimatePresence } from "framer-motion";
 const LoginLayout = () => {
     return (
         <div>
             <Header></Header>
             <main>
-                <Outlet></Outlet>
+                <Outlet />
             </main>
         </div>
     );
