@@ -8,6 +8,7 @@ import { FaRegEye } from "react-icons/fa";
 import ShareOnSocial from 'react-share-on-social';
 import { ToastContainer, toast, Flip } from 'react-toastify';
 import SocialSharePopup from './SocialSharePopup';
+import { motion } from 'framer-motion';
 const NewsCard = ({ news }) => {
     const [expanded, setExpanded] = useState(false);
     // Calculate stars
@@ -38,8 +39,14 @@ const NewsCard = ({ news }) => {
     };
     return (
         <div>
-
-            <div className='grid grid-cols-1 mx-2  rounded-sm shadow-md'>
+            <motion.div
+                className='grid grid-cols-1 mx-2 rounded-sm shadow-md'
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                // whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+            >
                 <div className='flex bg-base-200'>
                     <img className='rounded-full max-w-1/12 p-3' src={news.author.img} alt="" />
                     <div className='flex flex-col justify-center'>
@@ -102,9 +109,7 @@ const NewsCard = ({ news }) => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-
+            </motion.div>
         </div>
     );
 };

@@ -7,6 +7,8 @@ import BookMarkedNewsList from '../components/BookMarkedNewsList';
 import Login from '../components/loginLayout/Login';
 import LoginLayout from '../components/loginLayout/LoginLayout';
 import Register from '../components/loginLayout/Register';
+import About from '../components/About';
+import Career from '../components/Career';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
             {
                 path: "/bookmarkednews",
                 element: <BookMarkedNewsList></BookMarkedNewsList>
+            },
+            {
+                path: "/about",
+                element: <About></About>
+            },
+            {
+                path: "/career",
+                element: <Career></Career>
             }
         ]
     },
