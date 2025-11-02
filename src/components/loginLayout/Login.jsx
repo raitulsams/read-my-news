@@ -92,19 +92,25 @@
 
 // export default Login;
 
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { useContext, useState } from 'react';
+import { Link, Navigate } from 'react-router';
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { MdArrowForward } from "react-icons/md";
 import { SiGoogle } from "react-icons/si";
 import { FiGithub } from "react-icons/fi";
 import { TbBrandTwitter } from "react-icons/tb";
-import { motion } from "motion/react"  // ✅ Import Framer Motion
+import { motion as Motion } from "motion/react"  // ✅ Import Framer Motion
+import { AuthContext } from '../../provider/AuthProvider';
+import { useNavigate, useLocation } from 'react-router';
 
 const Login = () => {
+    const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
-
+    const { signInUser, setUser } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log(location);
     const handleTogglePassword = () => {
         if (password) setShowPassword(!showPassword);
     };
@@ -115,6 +121,19 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         console.log(email, password);
+
+        signInUser(email, password)
+            .then(result => {
+                console.log(result)
+                form.reset();
+                setPassword('');
+                setUser(result.user);
+                navigate(location?.state || '/');
+            })
+            .catch(error => {
+                console.log(error.code);
+                setError(error.message);
+            })
     };
 
     // Animation variants (for cleaner structure)
@@ -136,13 +155,13 @@ const Login = () => {
     return (
         <div className="hero min-h-auto">
             <div className="hero-content text-center">
-                <motion.div
+                <Motion.div
                     className="max-w-md"
                     variants={cardVariants}
                     initial="hidden"
                     animate="visible"
                 >
-                    <motion.form
+                    <Motion.form
                         onSubmit={handleLogin}
                         className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 m-auto shadow-md"
                         initial={{ scale: 0.95, opacity: 0 }}
@@ -150,7 +169,7 @@ const Login = () => {
                         transition={{ duration: 0.4 }}
                     >
                         <label className="label">Email</label>
-                        <motion.input
+                        <Motion.input
                             name="email"
                             type="email"
                             className="input"
@@ -163,7 +182,7 @@ const Login = () => {
 
                         <label className="label mt-2">Password</label>
                         <div className="relative">
-                            <motion.input
+                            <Motion.input
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 className="input"
@@ -182,44 +201,45 @@ const Login = () => {
                                 {showPassword ? <VscEyeClosed size={23} /> : <VscEye size={23} />}
                             </span>
                         </div>
+                        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-                        <motion.button
+                        <Motion.button
                             className="btn btn-outline btn-primary mt-4 flex items-center justify-center gap-1"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
                             Login <MdArrowForward size={16} />
-                        </motion.button>
+                        </Motion.button>
 
                         <div className="flex w-full flex-col">
                             <div className="divider text-base text-gray-400">Or sign in with</div>
                         </div>
 
                         <div className="flex justify-center gap-3 mt-2">
-                            <motion.button
+                            <Motion.button
                                 className="btn btn-outline hover:bg-white hover:text-gray-700 px-3 text-accent"
                                 variants={iconVariants}
                                 whileHover="hover"
                                 whileTap="tap"
                             >
                                 <SiGoogle size={20} />
-                            </motion.button>
-                            <motion.button
+                            </Motion.button>
+                            <Motion.button
                                 className="btn btn-outline hover:bg-white hover:text-gray-700 px-3 text-accent"
                                 variants={iconVariants}
                                 whileHover="hover"
                                 whileTap="tap"
                             >
                                 <FiGithub size={23} />
-                            </motion.button>
-                            <motion.button
+                            </Motion.button>
+                            <Motion.button
                                 className="btn btn-outline hover:bg-white hover:text-gray-700 px-3 text-accent"
                                 variants={iconVariants}
                                 whileHover="hover"
                                 whileTap="tap"
                             >
                                 <TbBrandTwitter size={23} />
-                            </motion.button>
+                            </Motion.button>
                         </div>
 
                         <div className="mt-4">
@@ -230,8 +250,8 @@ const Login = () => {
                                 </Link>
                             </p>
                         </div>
-                    </motion.form>
-                </motion.div>
+                    </Motion.form>
+                </Motion.div>
             </div>
         </div>
     );

@@ -25,8 +25,7 @@
 
 import React, { use } from "react";
 import { NavLink } from "react-router";
-import { motion } from "framer-motion";
-
+import { motion as Motion } from "framer-motion";
 // Fetch the category data
 const categoryPromise = fetch("/categories.json").then(res => res.json());
 
@@ -51,8 +50,8 @@ const Categories = () => {
                         }
                     >
                         {({ isActive }) => (
-                            <motion.div
-                                whileHover={{ scale: 1.05, x: 4 }}
+                            <Motion.div
+                                whileHover={{ scale: 1.05, x: 4, transition: { duration: 0.2 } }}
                                 whileTap={{ scale: 0.97 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 150 }}
                                 className="relative"
@@ -60,13 +59,13 @@ const Categories = () => {
                                 <span>{category.name}</span>
 
                                 {isActive && (
-                                    <motion.div
+                                    <Motion.div
                                         layoutId="activeCategory"
                                         className="absolute bottom-0 left-0 w-full h-[2px] bg-[#FF8C47]"
                                         transition={{ type: "spring", stiffness: 400, damping: 20 }}
                                     />
                                 )}
-                            </motion.div>
+                            </Motion.div>
                         )}
                     </NavLink>
                 ))}

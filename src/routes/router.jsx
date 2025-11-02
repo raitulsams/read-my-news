@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import HomeLayout from '../layouts/HomeLayout';
 import Home from '../pages/Home';
 import CategoryNews from '../pages/CategoryNews';
@@ -9,6 +9,10 @@ import LoginLayout from '../components/loginLayout/LoginLayout';
 import Register from '../components/loginLayout/Register';
 import About from '../components/About';
 import Career from '../components/Career';
+import NewsDetails from '../pages/NewsDetails';
+import PrivateRoute from './PrivateRoute';
+import NotFound from '../components/NotFound';
+import Loading from '../pages/Loading';
 const router = createBrowserRouter([
     {
         path: "/",
@@ -16,12 +20,13 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <Home></Home>
+                element: <Navigate to="/category/1" replace></Navigate>
             },
             {
                 path: "/category/:id",
                 element: <CategoryNews></CategoryNews>,
-                loader: () => fetch("/news.json").then(res => res.json())
+                loader: () => fetch("/news.json").then(res => res.json()),
+                hydrateFallbackElement: <Loading></Loading>
             },
             {
                 path: "/bookmarkednews",
@@ -56,12 +61,14 @@ const router = createBrowserRouter([
         element: <h1>Authentication Page</h1>
     },
     {
-        path: "/news",
-        element: <h1>News Page</h1>
+        path: "/news-details/:id",
+        element: <PrivateRoute><NewsDetails></NewsDetails></PrivateRoute>,
+        loader: () => fetch("/news.json").then(res => res.json()),
+        hydrateFallbackElement: <Loading></Loading>
     },
     {
         path: "/*",
-        element: <h1>Error Page</h1>
+        element: <NotFound></NotFound>
     },
 ])
 export default router;

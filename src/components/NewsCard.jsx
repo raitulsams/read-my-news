@@ -8,9 +8,12 @@ import { FaRegEye } from "react-icons/fa";
 import ShareOnSocial from 'react-share-on-social';
 import { ToastContainer, toast, Flip } from 'react-toastify';
 import SocialSharePopup from './SocialSharePopup';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
+import { useNavigate } from 'react-router';
 const NewsCard = ({ news }) => {
+    const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
+    const fallbackImage = 'https://ecdn.dhakatribune.net/contents/cache/images/640x359x1/uploads/media/2025/04/04/Yunus-Bimstec-aebb45ceb40168232e988c7641e47524.jpg?jadewits_media_id=42158';
     // Calculate stars
     const rating = parseFloat(news?.rating?.number) || 0;
     const fullStars = Math.floor(rating);
@@ -39,7 +42,7 @@ const NewsCard = ({ news }) => {
     };
     return (
         <div>
-            <motion.div
+            <Motion.div
                 className='grid grid-cols-1 mx-2 rounded-sm shadow-md'
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -70,20 +73,37 @@ const NewsCard = ({ news }) => {
                 </div>
                 <div className='flex flex-col gap-4 p-4'>
                     <h4 className='font-bold text-base-400'>{news?.title}</h4>
-                    <img className='w-full mx-auto' src={news?.thumbnail_url} alt="" />
+                    <img className='w-full mx-auto'
+                        // src={news?.thumbnail_url || fallbackImage}
+                        src={`https://images.weserv.nl/?url=${encodeURIComponent(news?.thumbnail_url)}`}
+                        alt="" onError={(e) => {
+                            // 3. Handle the error (like the 403 block) by replacing the source
+                            e.target.onerror = null; // prevents infinite loop
+                            e.target.src = fallbackImage;
+                        }} />
                     <span className={`${expanded ? '' : 'line-clamp-3'} transition-all text-sm/[26px] text-accent`}>
                         {news?.details}
                     </span>
-                    <span>
-                        {news?.details && (
+                    <div className='flex justify-between'>
+                        <span>
+                            {news?.details && (
+                                <button
+                                    className="font-semibold text-sm hover:cursor-pointer bg-gradient-to-r from-[#FF8C47] to-[#F75B5F] bg-clip-text text-transparent"
+                                    onClick={() => setExpanded(!expanded)}
+                                >
+                                    {expanded ? 'Show Less' : 'Read More..'}
+                                </button>
+                            )}
+                        </span>
+                        <span className='justify-end'>
                             <button
-                                className="font-semibold hover:cursor-pointer bg-gradient-to-r from-[#FF8C47] to-[#F75B5F] bg-clip-text text-transparent"
-                                onClick={() => setExpanded(!expanded)}
-                            >
-                                {expanded ? 'Show Less' : 'Read More..'}
+                                className="font-semibold text-sm hover:cursor-pointer bg-gradient-to-r from-[#FF8C47] to-[#F75B5F] bg-clip-text text-transparent"
+                                onClick={() => navigate(`/news-details/${news.id}`)}
+                            > Explore More
                             </button>
-                        )}
-                    </span>
+                        </span>
+                    </div>
+
                     <div className="divider !p-0 !m-0"></div>
                     <div className='flex justify-between mb-2'>
 
@@ -109,7 +129,7 @@ const NewsCard = ({ news }) => {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </Motion.div>
         </div>
     );
 };

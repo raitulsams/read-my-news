@@ -5,6 +5,7 @@ import App from './App.jsx'
 import router from './routes/router.jsx'
 import { RouterProvider } from 'react-router'
 import { ToastContainer, Flip, Slide } from 'react-toastify';
+import AuthProvider from './provider/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -12,7 +13,6 @@ createRoot(document.getElementById('root')).render(
     <ToastContainer
       position="bottom-right"
       autoClose={500}
-      limit={2}
       hideProgressBar={false}
       newestOnTop={true}
       closeOnClick={false}
@@ -22,8 +22,8 @@ createRoot(document.getElementById('root')).render(
       theme="dark"
       transition={Slide}
     />
-    <RouterProvider router={router}>
-
-    </RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AuthProvider>
   </StrictMode>,
 )

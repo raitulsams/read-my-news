@@ -1,9 +1,10 @@
 import React from 'react';
 import NewsCard from './NewsCard';
+import WorkInProgress from './WorkInProgress';
 const BookMarkedNewsList = () => {
     return (
         <div>
-            Working
+            <WorkInProgress></WorkInProgress>
         </div>
     );
 };
