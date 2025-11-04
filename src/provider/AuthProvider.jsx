@@ -1,11 +1,14 @@
 import React, { createContext, useEffect, useState } from 'react';
 import app from '../firebase/firebase.config';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { toast } from 'react-toastify';
 export const AuthContext = createContext();
 const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [bookmarkedNews, setBookmarkedNews] = useState([]);
+
     const createUser = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
@@ -42,6 +45,24 @@ const AuthProvider = ({ children }) => {
         return signOut(auth)
     }
 
+
+    // Bookmarks 
+    const handleBookmark = (news) => {
+        const notify = (msg) => {
+            toast.dismiss(); // Dismiss any existing toast
+            toast(msg);
+        };
+        const isBookmarked = bookmarkedNews.some(item => item.id === news.id);
+        setBookmarkedNews(prev => {
+            if (isBookmarked) {
+                notify("You un-bookmarked this news ☹️");
+                return prev.filter(item => item.id !== news.id);
+            } else {
+                notify("Successfully bookmarked this news 😀");
+                return [...prev, news];
+            }
+        });
+    };
     const authData = {
         user,
         setUser,
@@ -50,7 +71,10 @@ const AuthProvider = ({ children }) => {
         signInUser,
         loading,
         setLoading,
-        updateUserProfile
+        updateUserProfile,
+        handleBookmark,
+        bookmarkedNews,
+        setBookmarkedNews
     }
     return (
         <AuthContext value={authData}>

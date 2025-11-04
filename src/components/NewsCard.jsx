@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { format } from 'date-fns';
 import { BsJournalBookmark } from "react-icons/bs";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
-import { GoShareAndroid } from "react-icons/go";
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
-import ShareOnSocial from 'react-share-on-social';
-import { ToastContainer, toast, Flip } from 'react-toastify';
 import SocialSharePopup from './SocialSharePopup';
 import { motion as Motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../provider/AuthProvider';
 const NewsCard = ({ news }) => {
     const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
+    const { handleBookmark, bookmarkedNews } = useContext(AuthContext);
+    const isBookmarked = bookmarkedNews.some(item => item.id === news.id);
     const fallbackImage = 'https://ecdn.dhakatribune.net/contents/cache/images/640x359x1/uploads/media/2025/04/04/Yunus-Bimstec-aebb45ceb40168232e988c7641e47524.jpg?jadewits_media_id=42158';
     // Calculate stars
     const rating = parseFloat(news?.rating?.number) || 0;
@@ -20,26 +20,7 @@ const NewsCard = ({ news }) => {
     const hasHalfStar = rating - fullStars >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     //notify
-    const notify = (msg) => {
-        toast.dismiss(); // Dismiss any existing toast
-        toast(msg);
-    };
 
-    // Bookmarks
-    const [bookmarkedNews, setBookmarkedNews] = useState([]);
-    const isBookmarked = bookmarkedNews.some(item => item.id === news.id);
-
-    const handleBookmark = () => {
-        setBookmarkedNews(prev => {
-            if (isBookmarked) {
-                notify("You un-bookmarked this news ☹️");
-                return prev.filter(item => item.id !== news.id);
-            } else {
-                notify("Successfully bookmarked this news 😀");
-                return [...prev, news];
-            }
-        });
-    };
     return (
         <div>
             <Motion.div
@@ -57,8 +38,9 @@ const NewsCard = ({ news }) => {
                         <p className='text-xs text-accent'>{format(news?.author?.published_date, "yyyy-MM-dd")}</p>
                     </div>
                     <div className='flex gap-2 justify-end flex-1 items-center pr-3'>
-                        <button className='btn btn-square' onClick={handleBookmark}>
+                        <button className='btn btn-square' onClick={() => { handleBookmark(news) }}>
                             {
+
                                 isBookmarked ?
                                     <BsFillJournalBookmarkFill size={18}></BsFillJournalBookmarkFill>
                                     :

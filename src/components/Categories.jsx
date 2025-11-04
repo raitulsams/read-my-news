@@ -43,7 +43,7 @@ const Categories = () => {
                         to={`/category/${category.id}`}
                         className={({ isActive }) =>
                             `relative block px-4 py-2 rounded-md text-left transition-colors duration-200 overflow-hidden
-              ${isActive
+                             ${isActive
                                 ? "text-[#FF8C47] font-semibold"
                                 : "text-gray-700 hover:text-[#FF8C47]"
                             }`

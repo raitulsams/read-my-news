@@ -4,7 +4,7 @@ import userIcon from '../assets/user.png';
 import { motion as Motion } from 'framer-motion';
 import { AuthContext } from '../provider/AuthProvider';
 const NavBar = () => {
-    const { user, logOut, setUser } = use(AuthContext);
+    const { user, logOut, setUser, bookmarkedNews } = use(AuthContext);
     const handleLogout = () => {
         // Implement logout functionality
         console.log("Logout clicked");
@@ -70,7 +70,16 @@ const NavBar = () => {
                         <NavLink className={({ isActive }) =>
                             isActive ? 'font-bold border-b-1 text-[#FF8C47]' : 'font-default'
                         } to="/bookmarkednews">
-                            <span>Bookmarked News</span>
+                            {
+                                bookmarkedNews.length > 0 && (
+                                    <div className="indicator">
+                                        <span className="indicator-item badge badge-secondary">{bookmarkedNews.length}</span>
+                                        {/* <button className="btn">Bookmarked</button> */}
+                                        <span className=''>Bookmarked</span>
+                                    </div>
+                                )
+                            }
+
                         </NavLink>
                     </Motion.div>
                 </div>
@@ -88,7 +97,7 @@ const NavBar = () => {
 
                 </div>
             </div>
-            <div className="divider"></div>
+            {/* <div className="divider"></div> */}
         </div>
     );
 };

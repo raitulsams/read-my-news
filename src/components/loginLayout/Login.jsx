@@ -110,7 +110,7 @@ const Login = () => {
     const { signInUser, setUser } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
-    console.log(location);
+    // console.log(location);
     const handleTogglePassword = () => {
         if (password) setShowPassword(!showPassword);
     };
@@ -120,18 +120,18 @@ const Login = () => {
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, password);
+        // console.log(email, password);
 
         signInUser(email, password)
             .then(result => {
-                console.log(result)
+                // console.log(result)
                 form.reset();
                 setPassword('');
                 setUser(result.user);
                 navigate(location?.state || '/');
             })
             .catch(error => {
-                console.log(error.code);
+                // console.log(error.code);
                 setError(error.message);
             })
     };
